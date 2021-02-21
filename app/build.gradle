@@ -48,7 +48,15 @@ dependencies {
     // Declare the dependency for the Firebase Authentication library
     // When using the BoM, you don't specify versions in Firebase library dependencies
     implementation 'com.google.firebase:firebase-auth-ktx'
+    //for api requests
+    implementation 'com.android.volley:volley:1.1.0'
+    //OKHTTP
+    implementation("com.squareup.okhttp3:okhttp:4.9.0")
+    //json parsing
+    implementation 'com.google.code.gson:gson:2.8.6'
 
+    //image url loading
+    implementation 'com.squareup.picasso:picasso:2.71828'
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
