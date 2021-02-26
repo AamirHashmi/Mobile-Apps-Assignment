@@ -16,7 +16,6 @@ import java.io.IOException
 class SearchScreen : AppCompatActivity() {
 
     private val client = OkHttpClient();
-    private var searchData: String = "";
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

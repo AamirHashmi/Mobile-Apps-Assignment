@@ -41,7 +41,14 @@ class MainActivity : AppCompatActivity(){
             startActivity(intent);
         }
 
-        val testTextView: TextView = findViewById(R.id.apiTestTextView);
+        val shoppingListButton: Button = findViewById(R.id.NavigateToShoppingListPageButton);
+        shoppingListButton.setOnClickListener{
+            val intent = Intent(this, ShoppingListsScreen::class.java);
+            startActivity(intent);
+        }
+
+        //API testing
+    /*    val testTextView: TextView = findViewById(R.id.apiTestTextView);
 
 
 
@@ -77,7 +84,7 @@ class MainActivity : AppCompatActivity(){
         testButton.setOnClickListener{
             Log.d("msg", h);
             testTextView.text = h;
-        }
+        }*/
 
 
 
