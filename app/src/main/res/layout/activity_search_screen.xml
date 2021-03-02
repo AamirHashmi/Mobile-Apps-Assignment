@@ -18,7 +18,7 @@
 
             <EditText
                 android:id="@+id/SearchScreenSearchBar"
-                android:layout_width="374dp"
+                android:layout_width="250dp"
                 android:layout_height="41dp"
                 android:ems="10"
                 android:inputType="textPersonName"
@@ -29,7 +29,7 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_weight="1"
-                android:text="Button" />
+                android:text="Search" />
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView

@@ -1,10 +1,13 @@
 package com.example.mobile_apps_assignment
 
+import android.app.Activity
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -16,6 +19,7 @@ import com.google.firebase.ktx.Firebase
 class ShoppingListDetailScreen : AppCompatActivity() {
 
     private lateinit var ingredientsRecyclerView: RecyclerView;
+    private lateinit var shoppingListTitleTextView: TextView;
     private lateinit var database: DatabaseReference;
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,7 +27,7 @@ class ShoppingListDetailScreen : AppCompatActivity() {
         setContentView(R.layout.activity_shopping_list_detail_page)
 
         ingredientsRecyclerView = findViewById(R.id.shoppingListDetailScreenIngredientRecyclerView);
-        val shoppingListTitleTextView: TextView = findViewById(R.id.shoppingListDetailScreenTitleTextView);
+         shoppingListTitleTextView = findViewById(R.id.shoppingListDetailScreenTitleTextView);
         val deleteButton: FloatingActionButton = findViewById(R.id.deleteShoppingListButton);
         val editButton: FloatingActionButton = findViewById(R.id.editShoppingListButton);
 
@@ -45,6 +49,12 @@ class ShoppingListDetailScreen : AppCompatActivity() {
             finish();
         }
 
+        editButton.setOnClickListener{
+            val intent = Intent(this, ShoppingListEditScreen::class.java);
+            intent.putExtra("shoppingList", shoppingList);
+            startActivityForResult(intent, 303);
+        }
+
         println("UODWP")
     }
 
@@ -56,5 +66,25 @@ class ShoppingListDetailScreen : AppCompatActivity() {
                     Log.d("msg", "FAILED IN HEREEE");
                 }
 
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 303) {
+            if (resultCode == Activity.RESULT_OK) {
+                val result: ShoppingList = data!!.getParcelableExtra("newShoppingList")
+
+                val ingredientsListDataAdapter = CreateShoppingListAdapter(result!!.ingredients!!);
+
+                runOnUiThread {
+                    shoppingListTitleTextView.text = result.name;
+                    ingredientsRecyclerView.adapter = ingredientsListDataAdapter;
+                    ingredientsRecyclerView.layoutManager = LinearLayoutManager(this);
+                }
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                //Write your code if there's no result
+            }
+        }
     }
 }

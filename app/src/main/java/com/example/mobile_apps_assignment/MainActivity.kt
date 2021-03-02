@@ -47,6 +47,18 @@ class MainActivity : AppCompatActivity(){
             startActivity(intent);
         }
 
+        val foodAnalysisButton: Button = findViewById(R.id.openFoodAnalysisScreen);
+        foodAnalysisButton.setOnClickListener{
+            val intent = Intent(this, FoodAnalysisScreen::class.java);
+            startActivity(intent);
+        }
+
+        val profileButton: Button = findViewById(R.id.navigateToProfileButton);
+        profileButton.setOnClickListener{
+            val intent = Intent(this, ProfileScreen::class.java);
+            startActivity(intent);
+        }
+
         //API testing
     /*    val testTextView: TextView = findViewById(R.id.apiTestTextView);
 
