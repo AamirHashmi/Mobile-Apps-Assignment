@@ -28,15 +28,21 @@ class RecipeDetailScreen : AppCompatActivity() {
     private lateinit var instructionsTextView: TextView;
     private lateinit var database: DatabaseReference
     private var favourited: Boolean = false;
+    private lateinit var recipeId: String;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recipe_detail_screen)
 
         //getting recipe parameters from clicked item in the recycler view
-        val recipeId:String = intent.getIntExtra("RecipeId", -1).toString();
-        val recipeName:String = intent.getStringExtra("RecipeName").toString()
-        val recipeImage:String = intent.getStringExtra("RecipeImage").toString()
+        recipeId = intent.getIntExtra("RecipeId", -1).toString();
+        var recipeName:String = "";
+        var recipeImage:String = "";
+
+        if(intent.hasExtra("RecipeName")){
+             recipeName = intent.getStringExtra("RecipeName").toString()
+             recipeImage = intent.getStringExtra("RecipeImage").toString()
+        }
 
         //instantiating view components
         val recipeTitleTextView: TextView = findViewById(R.id.recipeDetailScreenTitleTextView);
@@ -87,12 +93,15 @@ class RecipeDetailScreen : AppCompatActivity() {
                     }
             }
 
-
         }
 
         //setting data to view components
         recipeTitleTextView.text=recipeName;
-        Picasso.get().load(recipeImage).into(recipeImageView);
+
+        if(recipeImage !=""){
+            Picasso.get().load(recipeImage).into(recipeImageView);
+        }
+
 
         getRecipeInformation(recipeId);
 
@@ -109,6 +118,7 @@ class RecipeDetailScreen : AppCompatActivity() {
         }
 
     }
+
 
     fun getRecipeInformation(recipeId: String) {
 
@@ -129,13 +139,12 @@ class RecipeDetailScreen : AppCompatActivity() {
                 val body = response.body!!.string();
                 val gson = GsonBuilder().create()
                 val recipeInformation = gson.fromJson(body, RecipeInformation::class.java) //need to set this to the instructions
-
+                println("nothing")
                 runOnUiThread {
                     if(recipeInformation.instructions != null){
                         instructionsTextView.text = recipeInformation.instructions.toString()
                     }
                    }
-
 
                 println(body);
             }

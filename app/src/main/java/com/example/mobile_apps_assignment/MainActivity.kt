@@ -1,25 +1,34 @@
 package com.example.mobile_apps_assignment
 
+import android.app.*
+import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.os.SystemClock
 import android.provider.AlarmClock.EXTRA_MESSAGE
 import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.google.gson.GsonBuilder
 import okhttp3.*
 import java.io.IOException
+import java.util.*
 
 
 class MainActivity : AppCompatActivity(){
 
     private lateinit var auth: FirebaseAuth
     private val client = OkHttpClient();
+    private lateinit var noti: NotificationChannel;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,48 +68,36 @@ class MainActivity : AppCompatActivity(){
             startActivity(intent);
         }
 
-        //API testing
-    /*    val testTextView: TextView = findViewById(R.id.apiTestTextView);
+        val mapButton: Button = findViewById(R.id.navigateToMapScreenButton);
+        mapButton.setOnClickListener{
+            val intent = Intent(this, MapsScreen::class.java);
+            startActivity(intent);
+        }
+
+        //notification stuff
+
+        val calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 19);
+        calendar.set(Calendar.MINUTE, 30);
+        calendar.set(Calendar.SECOND,0)
+
+         val alarmManager =
+                this.getSystemService(Context.ALARM_SERVICE) as? AlarmManager
+
+        val intent = Intent(applicationContext, NotificationReciever::class.java);
+        val pendingIntent = PendingIntent.getBroadcast(applicationContext,100,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+
+        alarmManager!!.setRepeating(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, AlarmManager.INTERVAL_DAY, pendingIntent)
 
 
 
-        val request = Request.Builder()
-                .url("https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search?query=burger&number=10")
-                .get()
-                .addHeader("x-rapidapi-key", "4c61ca64ffmshb84f7b0b1ac2333p1bfd52jsn9b60ed97c505")
-                .addHeader("x-rapidapi-host", "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com")
-                .build()
-
-        var h: String = "";
-        client.newCall(request).enqueue(object : Callback {
-
-
-            override fun onFailure(call: Call, e: IOException) {
-                e.printStackTrace()
-            }
-
-            override fun onResponse(call: Call, response: Response) {
-                response.use {
-                    if (!response.isSuccessful) throw IOException("Unexpected code $response")
-                    h = response.body!!.string();
-                   // Log.d("msg", h);
-
-                }
-                //Log.d("msg", h);
-            }
-
-
-        })
-        Log.d("msg", h);
         val testButton: Button = findViewById(R.id.testButton);
         testButton.setOnClickListener{
-            Log.d("msg", h);
-            testTextView.text = h;
-        }*/
 
+
+        }
 
 
     }
-
 
 }

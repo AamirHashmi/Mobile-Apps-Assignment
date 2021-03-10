@@ -14,6 +14,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.squareup.picasso.Picasso
 
 class ProfileScreen : AppCompatActivity() {
 
@@ -32,6 +33,11 @@ class ProfileScreen : AppCompatActivity() {
         val favouritesList: MutableList<RecipeSearchItem> = mutableListOf();
 
         val currentUser = Firebase.auth.currentUser;
+
+        profileNameTextView.text = currentUser!!.email;
+        //Picasso.get().load(currentUser.photoUrl).into(profileImageView);
+
+
         database = Firebase.database.reference.child("users").child(currentUser!!.uid).child("favourites");
 
         fun updateListUI(){
