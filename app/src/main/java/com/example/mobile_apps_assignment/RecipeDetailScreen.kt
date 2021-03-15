@@ -2,6 +2,7 @@ package com.example.mobile_apps_assignment
 
 import android.content.Intent
 import android.media.Image
+import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -29,6 +30,8 @@ class RecipeDetailScreen : AppCompatActivity() {
     private lateinit var database: DatabaseReference
     private var favourited: Boolean = false;
     private lateinit var recipeId: String;
+    private lateinit var favSound: MediaPlayer;
+    private lateinit var unfavSound: MediaPlayer;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,6 +55,10 @@ class RecipeDetailScreen : AppCompatActivity() {
         val shareDataButton: Button = findViewById(R.id.shareDataButton);
         val favouriteButton: FloatingActionButton = findViewById(R.id.recipeDetailScreenFavouriteButton);
 
+        //instantiating media player for sound effect
+        favSound = MediaPlayer.create(this, R.raw.favourite_sound_effect);
+        unfavSound = MediaPlayer.create(this, R.raw.unfav_sound_effect);
+
         val currentUser = Firebase.auth.currentUser;
         database = Firebase.database.reference;
 
@@ -60,10 +67,11 @@ class RecipeDetailScreen : AppCompatActivity() {
         val favListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 // Get Post object and use the values to update the UI
-                val recipe = dataSnapshot.key; //<RecipeSearchItem>()
+                val recipe = dataSnapshot.value; //<RecipeSearchItem>()
 
                 if(recipe != null){
                     favourited = true;
+                    favouriteButton.setImageResource(R.drawable.ic_star_fill)
                 }
             }
 
@@ -72,22 +80,35 @@ class RecipeDetailScreen : AppCompatActivity() {
                 Log.w("", "loadPost:onCancelled", databaseError.toException())
             }
         }
-        database.child(currentUser!!.uid!!).child("favourites").child(recipeId).addValueEventListener(favListener)
+        database.child("users").child(currentUser!!.uid!!).child("favourites").child(recipeId).addValueEventListener(favListener)
+        println("yoyo")
 
+//        if(favourited){
+//            favouriteButton.setImageResource(R.drawable.ic_star_fill)
+//        }else{
+//            favouriteButton.setImageResource(R.drawable.ic_baseline_star_outline_24)
+//        }
 
         favouriteButton.setOnClickListener{
 
             val recipeObj = RecipeSearchItem(recipeId.toInt(), recipeName, recipeImage);
 
+
+
             if(favourited){
                 database!!.child("users").child(currentUser!!.uid).child("favourites").child(recipeId).removeValue()
-                    .addOnSuccessListener { favourited = false }
+                    .addOnSuccessListener { favourited = false
+                        favouriteButton.setImageResource(R.drawable.ic_baseline_star_outline_24)
+                        unfavSound.start();}
                     .addOnFailureListener{
                         Log.d("msg", "FAILED IN HEREEE");
                     }
             }else{
                 database!!.child("users").child(currentUser!!.uid).child("favourites").child(recipeId).setValue(recipeObj)
-                    .addOnSuccessListener { favourited = true }
+                    .addOnSuccessListener { favourited = true
+                        favouriteButton.setImageResource(R.drawable.ic_star_fill)
+                        favSound.start();
+                       }
                     .addOnFailureListener{
                         Log.d("msg", "FAILED IN HEREEE");
                     }
