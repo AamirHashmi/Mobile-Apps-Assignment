@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Mobile-Apps-Assignment</string>
+    <string name="login">" acceso"</string>
+    <string name="register">Registrarse</string>
+    <string name="email_hint">Email</string>
+    <string name="password_hint">contraseña</string>
+    <string name="profile_nav_bar">perfil</string>
+    <string name="search_nav_bar">buscar</string>
+    <string name="shopping_list_nav_bar">" listas de compras"</string>
+    <string name="map_nav_bar">mapa</string>
+    <string name="food_analysis_nav_bar">análisis</string>
+    <string name="settings_nav_bar">ajustes</string>
+    <string name="language_nav_bar">idiomas</string>
+    <string name="log_out_nav_bar">" cerrar sesión"</string>
+    <string name="search_hint">buscar...</string>
+    <string name="shopping_list_ingredients">Ingredientes:</string>
+    <string name="shopping_list_add_ingredient">" agregar ingrediente"</string>
+    <string name="shopping_list_save">salvar</string>
+    <string name="shopping_list_create">crear</string>
+    <string name="shopping_list_title">título</string>
+    <string name="profile_favourites">favoritos:</string>
+    <string name="recipe_instructions">instrucciones:</string>
+    <string name="recipe_share">Cuota</string>
+    <string name="camera">cámara</string>
+    <string name="analyse">"analizar "</string>
+    <string name="toast_recipe_favourite">favorecido</string>
+    <string name="toast_recipe_unfavourite">desfavorecido</string>
+    <string name="title_activity_maps_screen">Mapa</string>
+</resources>

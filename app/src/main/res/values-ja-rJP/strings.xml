@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Mobile-Apps-Assignment</string>
+    <string name="search_hint">" 探す..."</string>
+    <string name="shopping_list_nav_bar">" 買い物リスト"</string>
+    <string name="search_nav_bar">" 探す"</string>
+    <string name="map_nav_bar">地図</string>
+    <string name="food_analysis_nav_bar">" 分析"</string>
+    <string name="language_nav_bar">" 言語"</string>
+    <string name="log_out_nav_bar">" ログアウト"</string>
+    <string name="profile_nav_bar">" プロフィール"</string>
+    <string name="settings_nav_bar">" 設定"</string>
+    <string name="shopping_list_ingredients">" 材料:"</string>
+    <string name="shopping_list_add_ingredient">材料を追加する</string>
+    <string name="shopping_list_save">セーブ</string>
+    <string name="shopping_list_create">作成する</string>
+    <string name="shopping_list_title">" 題名"</string>
+    <string name="profile_favourites">" お気に入り:"</string>
+    <string name="title_activity_maps_screen">" 地図"</string>
+    <string name="login">" ログイン"</string>
+    <string name="register">" 登録"</string>
+    <string name="email_hint">" Eメール"</string>
+    <string name="password_hint">" パスワード"</string>
+    <string name="recipe_instructions">指示:</string>
+    <string name="recipe_share">共有</string>
+    <string name="toast_recipe_favourite">" 好き"</string>
+    <string name="toast_recipe_unfavourite">嫌い</string>
+    <string name="camera">カメラ</string>
+    <string name="analyse">" 分析する"</string>
+</resources>

@@ -6,37 +6,54 @@
     android:layout_height="match_parent"
     tools:context=".ShoppingListEditScreen">
 
-    <LinearLayout
+    <EditText
+        android:id="@+id/ShoppingListEditTitleTextInput"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        android:ems="10"
+        android:hint="@string/shopping_list_title"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toBottomOf="@+id/SaveChangesShoppingListButton"
+        app:layout_constraintEnd_toEndOf="@+id/ShoppingListEditIngredientsScrollView"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.088" />
 
-        <EditText
-            android:id="@+id/ShoppingListEditTitleTextInput"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:text="Title..." />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/ShoppingListEditIngredientsScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/ShoppingListEditIngredientsScrollView"
-            android:layout_width="match_parent"
-            android:layout_height="400dp" />
-
-        <Button
-            android:id="@+id/ShoppingListEditAddIngredientToListButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Add Ingredient" />
-
-    </LinearLayout>
+    <Button
+        android:id="@+id/ShoppingListEditAddIngredientToListButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/shopping_list_add_ingredient"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.521"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.843" />
 
     <Button
         android:id="@+id/SaveChangesShoppingListButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Save Changes"
+        android:text="@string/shopping_list_save"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

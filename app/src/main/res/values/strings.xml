@@ -22,4 +22,39 @@
     <string name="menu_slideshow">Slideshow</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+    <string name="email_hint">Email</string>
+    <string name="password_hint">Password</string>
+
+    <string name="profile_nav_bar">Profile</string>
+    <string name="search_nav_bar">Search</string>
+    <string name="shopping_list_nav_bar">Shopping Lists</string>
+    <string name="map_nav_bar">Map</string>
+    <string name="food_analysis_nav_bar">Food Analysis</string>
+    <string name="settings_nav_bar">Settings</string>
+    <string name="language_nav_bar">Languages</string>
+    <string name="log_out_nav_bar">LogOut</string>
+
+    <string name="search_hint">Search...</string>
+
+    <string name="shopping_list_ingredients">Ingredients:</string>
+    <string name="shopping_list_add_ingredient">Add Ingredient</string>
+    <string name="shopping_list_save">Save</string>
+    <string name="shopping_list_create">Create</string>
+    <string name="shopping_list_title">Title</string>
+
+    <string name="profile_favourites">Favourites:</string>
+    <string name="recipe_instructions">Instructions:</string>
+    <string name="recipe_share">Share</string>
+
+    <string name="camera">Camera</string>
+    <string name="analyse">Analyse</string>
+
+    <string name="toast_recipe_favourite">Favourited</string>
+    <string name="toast_recipe_unfavourite">Unfavourited</string>
+
+
+
 </resources>

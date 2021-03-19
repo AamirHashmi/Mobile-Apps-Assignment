@@ -55,18 +55,26 @@
         <activity
             android:name=".MapsScreen"
             android:label="@string/title_activity_maps_screen" />
-        <activity android:name=".MapScreen" />
-        <activity android:name=".ProfileScreen" />
+        <activity android:name=".MapScreen"
+            android:theme="@style/Theme.MobileAppsAssignment.NoActionBar"/>
+        <activity android:name=".ProfileScreen"
+            android:theme="@style/Theme.MobileAppsAssignment.NoActionBar"/>
         <activity android:name=".FoodAnalysisScreen" />
-        <activity android:name=".ShoppingListEditScreen" />
-        <activity android:name=".ShoppingListDetailScreen" />
-        <activity android:name=".IngredientDetailScreen" />
-        <activity android:name=".IngredientSearchScreen" />
-        <activity android:name=".CreateShoppingListScreen" />
+        <activity android:name=".ShoppingListEditScreen"
+            android:theme="@style/Theme.MobileAppsAssignment.NoActionBar"/>
+        <activity android:name=".ShoppingListDetailScreen"
+            android:theme="@style/Theme.MobileAppsAssignment.NoActionBar"/>
+        <activity android:name=".IngredientDetailScreen"
+            android:theme="@style/Theme.MobileAppsAssignment.NoActionBar"/>
+        <activity android:name=".IngredientSearchScreen"
+            android:theme="@style/Theme.MobileAppsAssignment.NoActionBar"/>
+        <activity android:name=".CreateShoppingListScreen"
+            android:theme="@style/Theme.MobileAppsAssignment.NoActionBar"/>
         <activity android:name=".ShoppingListsScreen" />
         <activity
             android:name=".RecipeDetailScreen"
-            android:parentActivityName=".SearchScreen" />
+            android:parentActivityName=".SearchScreen"
+            android:theme="@style/Theme.MobileAppsAssignment.NoActionBar"/>
         <activity
             android:name=".SearchScreen"
             android:parentActivityName=".MainActivity"

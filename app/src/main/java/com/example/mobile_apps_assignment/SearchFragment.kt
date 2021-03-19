@@ -12,6 +12,7 @@ import android.widget.ImageButton
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.GsonBuilder
+import kotlinx.android.synthetic.main.activity_main.view.*
 import okhttp3.*
 import java.io.IOException
 
@@ -52,6 +53,7 @@ class SearchFragment : Fragment() {
         val searchButton: ImageButton = view.findViewById(R.id.searchFragmentSearchButton);
         val searchListRecyclerView: RecyclerView = view.findViewById(R.id.searchFragmentSearchList);
         searchListRecyclerView.layoutManager = LinearLayoutManager(view.context);
+
 
         fun getSearchData(searchQuery: String) {
             val request = Request.Builder()

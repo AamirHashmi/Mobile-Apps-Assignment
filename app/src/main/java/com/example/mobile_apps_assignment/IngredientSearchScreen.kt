@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.GsonBuilder
@@ -21,7 +22,7 @@ class IngredientSearchScreen : AppCompatActivity() {
         setContentView(R.layout.activity_ingredient_search_screen)
 
         val searchBar: EditText = findViewById(R.id.IngredientSearchScreenSearchBar);
-        val searchButton: Button = findViewById(R.id.IngredientSearchScreenSearchButton);
+        val searchButton: ImageButton = findViewById(R.id.IngredientSearchScreenSearchButton);
         val searchListRecyclerView: RecyclerView = findViewById(R.id.IngredientSearchList);
 
         fun getSearchData(searchQuery: String) {

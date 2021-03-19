@@ -7,27 +7,31 @@
         <item
             android:id="@+id/nav_search"
             android:icon="@drawable/ic_search"
-            android:title="Search" />
+            android:title="@string/search_nav_bar" />
         <item
             android:id="@+id/nav_shopping_list"
             android:icon="@drawable/ic_shopping_list"
-            android:title="Shopping Lists" />
+            android:title="@string/shopping_list_nav_bar" />
         <item
             android:id="@+id/nav_map"
             android:icon="@drawable/ic_map"
-            android:title="Map" />
+            android:title="@string/map_nav_bar" />
         <item
             android:id="@+id/nav_food_analysis"
             android:icon="@drawable/ic_food_analysis"
-            android:title="Food Analysis" />
+            android:title="@string/food_analysis_nav_bar" />
     </group>
 
-    <item android:title="Settings">
+    <item android:title="@string/settings_nav_bar">
         <menu>
+            <item
+                android:id="@+id/nav_language"
+                android:icon="@drawable/ic_language"
+                android:title="@string/language_nav_bar" />
             <item
                 android:id="@+id/nav_logout"
                 android:icon="@drawable/ic_logout"
-                android:title="LogOut" />
+                android:title="@string/log_out_nav_bar" />
         </menu>
     </item>
 </menu>

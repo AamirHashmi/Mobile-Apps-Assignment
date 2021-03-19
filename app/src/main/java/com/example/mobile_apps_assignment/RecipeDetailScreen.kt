@@ -1,14 +1,20 @@
 package com.example.mobile_apps_assignment
 
+import android.app.Activity
 import android.content.Intent
 import android.media.Image
 import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.GestureDetector
+import android.view.MotionEvent
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
+import androidx.core.view.GestureDetectorCompat
+import androidx.core.view.MotionEventCompat
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
@@ -23,24 +29,34 @@ import com.squareup.picasso.Picasso
 import okhttp3.*
 import java.io.IOException
 
-class RecipeDetailScreen : AppCompatActivity() {
+class RecipeDetailScreen : AppCompatActivity(),  GestureDetector.OnGestureListener,
+    GestureDetector.OnDoubleTapListener {
 
     private val client = OkHttpClient();
     private lateinit var instructionsTextView: TextView;
+    private lateinit var favouriteButton: FloatingActionButton;
     private lateinit var database: DatabaseReference
+    private lateinit var userId: String;
+    private lateinit var recipeName: String;
+    private lateinit var recipeImage: String;
     private var favourited: Boolean = false;
     private lateinit var recipeId: String;
     private lateinit var favSound: MediaPlayer;
     private lateinit var unfavSound: MediaPlayer;
 
+    private lateinit var gd:GestureDetectorCompat;
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recipe_detail_screen)
 
+        gd = GestureDetectorCompat(this, this);
+        gd.setOnDoubleTapListener(this);
+
         //getting recipe parameters from clicked item in the recycler view
         recipeId = intent.getIntExtra("RecipeId", -1).toString();
-        var recipeName:String = "";
-        var recipeImage:String = "";
+        recipeName = "";
+        recipeImage = "";
 
         if(intent.hasExtra("RecipeName")){
              recipeName = intent.getStringExtra("RecipeName").toString()
@@ -53,13 +69,14 @@ class RecipeDetailScreen : AppCompatActivity() {
         instructionsTextView = findViewById(R.id.instructionsScrollViewText);
 
         val shareDataButton: Button = findViewById(R.id.shareDataButton);
-        val favouriteButton: FloatingActionButton = findViewById(R.id.recipeDetailScreenFavouriteButton);
+        favouriteButton = findViewById(R.id.recipeDetailScreenFavouriteButton);
 
         //instantiating media player for sound effect
         favSound = MediaPlayer.create(this, R.raw.favourite_sound_effect);
         unfavSound = MediaPlayer.create(this, R.raw.unfav_sound_effect);
 
         val currentUser = Firebase.auth.currentUser;
+        userId = currentUser!!.uid;
         database = Firebase.database.reference;
 
 
@@ -80,7 +97,7 @@ class RecipeDetailScreen : AppCompatActivity() {
                 Log.w("", "loadPost:onCancelled", databaseError.toException())
             }
         }
-        database.child("users").child(currentUser!!.uid!!).child("favourites").child(recipeId).addValueEventListener(favListener)
+        database.child("users").child(userId).child("favourites").child(recipeId).addValueEventListener(favListener)
         println("yoyo")
 
 //        if(favourited){
@@ -90,37 +107,15 @@ class RecipeDetailScreen : AppCompatActivity() {
 //        }
 
         favouriteButton.setOnClickListener{
-
             val recipeObj = RecipeSearchItem(recipeId.toInt(), recipeName, recipeImage);
-
-
-
-            if(favourited){
-                database!!.child("users").child(currentUser!!.uid).child("favourites").child(recipeId).removeValue()
-                    .addOnSuccessListener { favourited = false
-                        favouriteButton.setImageResource(R.drawable.ic_baseline_star_outline_24)
-                        unfavSound.start();}
-                    .addOnFailureListener{
-                        Log.d("msg", "FAILED IN HEREEE");
-                    }
-            }else{
-                database!!.child("users").child(currentUser!!.uid).child("favourites").child(recipeId).setValue(recipeObj)
-                    .addOnSuccessListener { favourited = true
-                        favouriteButton.setImageResource(R.drawable.ic_star_fill)
-                        favSound.start();
-                       }
-                    .addOnFailureListener{
-                        Log.d("msg", "FAILED IN HEREEE");
-                    }
-            }
-
+            favouriteRecipe(recipeObj);
         }
 
         //setting data to view components
         recipeTitleTextView.text=recipeName;
 
         if(recipeImage !=""){
-            Picasso.get().load(recipeImage).into(recipeImageView);
+            Picasso.get().load( "https://spoonacular.com/recipeImages/"+ recipeImage).into(recipeImageView);
         }
 
 
@@ -134,8 +129,8 @@ class RecipeDetailScreen : AppCompatActivity() {
                 type = "text/plain"
             }
 
-            val shareIntent = Intent.createChooser(sendIntent, "Share with: ")
-            startActivity(shareIntent)
+            val shareIntent = Intent.createChooser(sendIntent, getString(R.string.recipe_share));
+            startActivity(shareIntent);
         }
 
     }
@@ -173,6 +168,87 @@ class RecipeDetailScreen : AppCompatActivity() {
     }
 
 
+    fun favouriteRecipe(recipeObj:RecipeSearchItem){
+        if(favourited){
+            database!!.child("users").child(userId).child("favourites").child(recipeId).removeValue()
+                .addOnSuccessListener {
+                    favourited = false
+                    favouriteButton.setImageResource(R.drawable.ic_baseline_star_outline_24)
+                    unfavSound.start();
+                    Toast.makeText(baseContext,R.string.toast_recipe_unfavourite, Toast.LENGTH_SHORT).show();
+                }
+                .addOnFailureListener{
+                    Log.d("msg", "FAILED IN HEREEE");
+                }
+        }else{
+            database!!.child("users").child(userId).child("favourites").child(recipeId).setValue(recipeObj)
+                .addOnSuccessListener {
+                    favourited = true
+                    favouriteButton.setImageResource(R.drawable.ic_star_fill)
+                    favSound.start();
+                    Toast.makeText(baseContext,R.string.toast_recipe_favourite, Toast.LENGTH_SHORT).show();
+                }
+                .addOnFailureListener{
+                    Log.d("msg", "FAILED IN HEREEE");
+                }
+        }
+    }
+
+    override fun onDoubleTap(p0: MotionEvent?): Boolean {
+        return true;
+    }
+
+
+    override fun onDoubleTapEvent(p0: MotionEvent?): Boolean {
+       //Toast.makeText(this,"DOUBLE 8 TAPPED", Toast.LENGTH_SHORT).show();
+
+        return true;
+    }
+
+    override fun onSingleTapConfirmed(p0: MotionEvent?): Boolean {
+      //  Toast.makeText(this,"SINGLE TAPPED", Toast.LENGTH_SHORT).show();
+        return true;
+    }
+
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+        return if (gd.onTouchEvent(event)) {
+            true
+        } else {
+            super.onTouchEvent(event)
+        }
+    }
+
+    override fun onShowPress(p0: MotionEvent?) {
+        //Toast.makeText(this,"PRESSED", Toast.LENGTH_SHORT).show();
+
+    }
+
+    override fun onSingleTapUp(p0: MotionEvent?): Boolean {
+        //Toast.makeText(this,"SINGLE TAP UP", Toast.LENGTH_SHORT).show();
+        return true;
+    }
+
+    override fun onDown(p0: MotionEvent?): Boolean {
+        //Toast.makeText(this,"OONDOWN", Toast.LENGTH_SHORT).show();
+        return true;
+    }
+
+    override fun onFling(p0: MotionEvent?, p1: MotionEvent?, p2: Float, p3: Float): Boolean {
+        //Toast.makeText(this,"FLING", Toast.LENGTH_SHORT).show();
+        val recipeObj = RecipeSearchItem(recipeId.toInt(), recipeName, recipeImage);
+        favouriteRecipe(recipeObj)
+        return true;
+    }
+
+    override fun onScroll(p0: MotionEvent?, p1: MotionEvent?, p2: Float, p3: Float): Boolean {
+       // Toast.makeText(this,"SCROLL", Toast.LENGTH_SHORT).show();
+        return true;
+    }
+
+    override fun onLongPress(p0: MotionEvent?) {
+      //  Toast.makeText(this,"LONG TAPPED", Toast.LENGTH_SHORT).show();
+
+    }
 
 
 }

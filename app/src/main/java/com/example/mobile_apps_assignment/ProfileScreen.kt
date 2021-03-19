@@ -26,6 +26,7 @@ class ProfileScreen : AppCompatActivity() {
         setContentView(R.layout.activity_profile_screen)
 
         val profileImageView: ImageView = findViewById(R.id.profilePictureImageView);
+        profileImageView.setImageResource(R.mipmap.ic_launcher_round);
         val profileNameTextView: TextView = findViewById(R.id.profileNameTextView);
 
         favouritesListRecyclerView = findViewById(R.id.profileFavouritesRecipeList);

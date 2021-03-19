@@ -5,6 +5,7 @@ import android.app.NotificationChannel
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
@@ -48,19 +49,21 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         drawer.addDrawerListener(actionBarDrawToggle);
         actionBarDrawToggle.syncState();
 
-
-
         val navView: NavigationView = findViewById(R.id.nav_view);
         //hamdling nav on click events
 
-
         navView.setNavigationItemSelectedListener(this);
+
+        if(savedInstanceState == null){
+            supportFragmentManager.beginTransaction().replace(R.id.fragment_container, SearchFragment()).commit();
+            navView.setCheckedItem(R.id.nav_search);
+        }
+
 
 
 
         //setting nav bar header values
         val headerLayout: View = navView.getHeaderView(0)
-        headerLayout.navBarName.text = "Profile"
         headerLayout.navBarInfo.text = auth.currentUser!!.email.toString();
         headerLayout.setOnClickListener{
             val intent = Intent(this, ProfileScreen::class.java);
@@ -146,6 +149,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.nav_shopping_list  -> supportFragmentManager.beginTransaction().replace(R.id.fragment_container, ShoppingListsFragment()).commit();
             R.id.nav_map  -> startActivity(Intent(this, MapsScreen::class.java))//supportFragmentManager.beginTransaction().replace(R.id.fragment_container, MapsFragment(), "map-fragment").commit();
             R.id.nav_food_analysis  -> supportFragmentManager.beginTransaction().replace(R.id.fragment_container, FoodAnalysisFragment()).commit();
+            R.id.nav_language  -> supportFragmentManager.beginTransaction().replace(R.id.fragment_container, LanguageFragment()).commit();
             R.id.nav_logout  -> logOut();
         }
         drawer.closeDrawer(GravityCompat.START);

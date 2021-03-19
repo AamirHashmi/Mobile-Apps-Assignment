@@ -47,23 +47,27 @@ class SearchAdapter(private val dataSet: List<RecipeSearchItem>) :
 
         viewHolder.searchItemNameTextView.text = currentItem.title;
 
+        var imageUrl: String = currentItem!!.image!!;
         //using picasso to load image url
-        Picasso.get().load("https://spoonacular.com/recipeImages/" + currentItem.image).into(viewHolder.searchItemImageView);
+        if(imageUrl.contains("https://spoonacular.com/recipeImages/")){
+            imageUrl = imageUrl.replace("https://spoonacular.com/recipeImages/", "");
+        }
+        Picasso.get().load("https://spoonacular.com/recipeImages/" + imageUrl).into(viewHolder.searchItemImageView);
 
 
         viewHolder.itemView.setOnClickListener{
-            Toast.makeText(viewHolder.itemView.context, viewHolder.searchItemNameTextView.text.toString() + " clicked" , Toast.LENGTH_SHORT).show()
+            //Toast.makeText(viewHolder.itemView.context, viewHolder.searchItemNameTextView.text.toString() + " clicked" , Toast.LENGTH_SHORT).show()
 
             val recipeName = viewHolder.searchItemNameTextView.text.toString().trim();
             val recipeId = currentItem.id;
-            val recipeImage = "https://spoonacular.com/recipeImages/" + currentItem.image;
+
 
             val intent = Intent(viewHolder.itemView.context, RecipeDetailScreen::class.java)
 
             // passing parameters to recipe detail page
             intent.putExtra("RecipeId", recipeId);
             intent.putExtra("RecipeName", recipeName);
-            intent.putExtra("RecipeImage", recipeImage);
+            intent.putExtra("RecipeImage", imageUrl);
             viewHolder.itemView.context.startActivity(intent);
         }
     }

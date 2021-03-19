@@ -22,7 +22,6 @@ class ShoppingListAdapter(private val dataSet: List<ShoppingList>) :
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view){
 
         val itemTextView: TextView = view.findViewById(R.id.shoppingListItemTitleTextView);
-        val itemDeleteButton: Button = view.findViewById(R.id.shoppingListItemDeleteButton);
 
 
     }
@@ -44,9 +43,6 @@ class ShoppingListAdapter(private val dataSet: List<ShoppingList>) :
         // contents of the view with that element
 
         viewHolder.itemTextView.text = currentItem.name;
-        viewHolder.itemDeleteButton.setOnClickListener{
-           // Toast.makeText(this, currentItem)
-        }
 
 
         val clickedShoppingList = currentItem;
