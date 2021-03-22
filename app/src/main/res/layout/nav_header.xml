@@ -11,18 +11,16 @@
 
     <ImageView
         android:id="@+id/navBarImageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:scaleType="centerCrop"
         android:src="@mipmap/ic_launcher_round" />
 
-    <TextView
-        android:id="@+id/navBarName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:text="@string/profile_nav_bar"/>
 
+    <TextView
+        android:id="@+id/navBarUserName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <TextView
         android:id="@+id/navBarInfo"

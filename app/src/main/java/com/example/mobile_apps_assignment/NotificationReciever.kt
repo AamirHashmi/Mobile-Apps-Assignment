@@ -12,7 +12,7 @@ import com.google.gson.GsonBuilder
 import okhttp3.*
 import java.io.IOException
 
-class NotificationReciever : BroadcastReceiver() {
+class  NotificationReciever : BroadcastReceiver() {
 
     private lateinit var recipeId:String;
     private lateinit var recipeName:String;

@@ -28,12 +28,17 @@ class Register : AppCompatActivity() {
 
         val registerButton: Button = findViewById(R.id.registerButton);
         val emailTextInput: EditText = findViewById(R.id.emailTextInput);
+        val nameTextInput: EditText = findViewById(R.id.registerNameTextInput);
         val passwordTextInput: EditText = findViewById(R.id.passwordTextInput);
+
+
 
 
         registerButton.setOnClickListener{
             val email = if(emailTextInput.text.isEmpty()) " " else emailTextInput.text.toString().trim();
             val password = if(passwordTextInput.text.isEmpty()) " " else passwordTextInput.text.toString().trim();
+            val name = if(nameTextInput.text.isEmpty()) " " else nameTextInput.text.toString().trim();
+
 
             Log.d("msg", "This is the email: " + email);
             Log.d("msg", "This is the password: " + password);
@@ -44,14 +49,14 @@ class Register : AppCompatActivity() {
                 Toast.makeText(baseContext, "Invalid Password", Toast.LENGTH_SHORT).show()
             }
             else{
-                signUp(email, password);
+                signUp(email, password, name);
             }
         }
 
     }
 
 
-    private fun signUp(email: String, password: String) {
+    private fun signUp(email: String, password: String, name: String) {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
@@ -62,7 +67,8 @@ class Register : AppCompatActivity() {
                     sendSendVerificationEmail();
                     Toast.makeText(baseContext, "Registered Successfully", Toast.LENGTH_SHORT).show()
                     finish();
-                    val intent = Intent(this, LandingScreen::class.java);
+                    val intent = Intent(this, MainActivity::class.java);
+                    intent.putExtra("name", name);
                     startActivity(intent)
 
                 } else {

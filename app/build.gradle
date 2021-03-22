@@ -53,6 +53,11 @@ dependencies {
     // When using the BoM, you don't specify versions in Firebase library dependencies
     implementation 'com.google.firebase:firebase-auth-ktx:20.0.2'
     implementation 'com.google.firebase:firebase-database-ktx:19.6.0'
+
+    //firebase image storage
+    implementation 'com.google.firebase:firebase-storage-ktx:19.2.1'
+    implementation 'com.firebaseui:firebase-ui-storage:6.4.0'
+
     //for api requests
     implementation 'com.android.volley:volley:1.1.0'
     //OKHTTP
@@ -75,6 +80,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+
 
 
     testImplementation 'junit:junit:4.+'

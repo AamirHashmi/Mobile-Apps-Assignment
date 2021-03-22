@@ -1,11 +1,17 @@
 package com.example.mobile_apps_assignment
 
+import android.content.Intent
+import android.content.res.Configuration
+import android.content.res.Resources
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.fragment.app.Fragment
+import java.util.*
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -37,9 +43,34 @@ class LanguageFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_language, container, false)
 
-        val testButton: Button = view.findViewById(R.id.testChangeLanguageButton);
+        val englishButton: Button = view.findViewById(R.id.englishButton);
+        val japaneseButton: Button = view.findViewById(R.id.japaneseButton);
+        val spanishButton: Button = view.findViewById(R.id.spanishButton);
 
+        englishButton.setOnClickListener{
+            setLocale("en")
+        }
+
+        japaneseButton.setOnClickListener{
+            setLocale("ja")
+        }
+
+        spanishButton.setOnClickListener{
+            setLocale("es")
+        }
         return view;
+    }
+
+    fun setLocale(lang: String?) {
+        val myLocale = Locale(lang)
+        val res: Resources = resources
+        val dm: DisplayMetrics = res.getDisplayMetrics()
+        val conf: Configuration = res.getConfiguration()
+        conf.locale = myLocale
+        res.updateConfiguration(conf, dm)
+        val refresh = Intent(requireContext(), MainActivity::class.java)
+        requireActivity().finish()
+        startActivity(refresh)
     }
 
     companion object {

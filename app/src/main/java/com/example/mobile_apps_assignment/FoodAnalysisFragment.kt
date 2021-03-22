@@ -2,6 +2,7 @@ package com.example.mobile_apps_assignment
 
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -16,9 +17,18 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
+import androidx.core.graphics.drawable.toBitmap
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.activity_profile_screen.*
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import java.io.ByteArrayOutputStream
 import java.io.File
+import java.io.FileNotFoundException
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -38,13 +48,17 @@ class FoodAnalysisFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    private val storage = FirebaseStorage.getInstance();
+    private lateinit var storageRef: StorageReference;
+
     private val REQUEST_IMAGE_CAPTURE = 324;
     private lateinit var currentPhotoPath: String;
     private val client = OkHttpClient()
     private val Fragment.packageManager get() = activity?.packageManager
     private lateinit var currentPhoto: Bitmap;
-
     private lateinit var foodImageView: ImageView;
+
+    private lateinit var toSendImageUrl:String;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,6 +66,8 @@ class FoodAnalysisFragment : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+        val currentUser = Firebase.auth;
+        storageRef =  storage.reference.child("analysis/" + currentUser!!.uid + ".jpg");
 
     }
 
@@ -63,11 +79,30 @@ class FoodAnalysisFragment : Fragment() {
 
         val view =  inflater.inflate(R.layout.fragment_food_analysis, container, false);
         val openCameraButton: Button = view.findViewById(R.id.analysisFragmentOpenCameraButton);
+        val analyseButton: Button = view.findViewById(R.id.foodAnalysisFragmentAnalyseButton);
+        val uploadButton: Button = view.findViewById(R.id.foodAnalysisUploadButton);
         foodImageView = view.findViewById(R.id.foodAnalysisFragmentImageView);
         openCameraButton.setOnClickListener{
             dispatchTakePictureIntent();
            // Toast.makeText(view.context, "IT WORKED", Toast.LENGTH_SHORT);
             //Log.d("msg","YOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
+        }
+
+        uploadButton.setOnClickListener{
+            uploadImageToFB(foodImageView.drawable.toBitmap());
+        }
+
+        analyseButton.setOnClickListener{
+            //add validation
+            analyseButton.isEnabled = false;
+            val navImage = storageRef.downloadUrl.addOnSuccessListener {
+                // Got the download URL for 'users/me/profile.png'
+                sendPicture(it.toString());
+                analyseButton.isEnabled = true;
+            }.addOnFailureListener {
+                // Handle any errors
+                analyseButton.isEnabled = true;
+            }
         }
 
         return view;
@@ -99,7 +134,7 @@ class FoodAnalysisFragment : Fragment() {
                         it
                     )
                     takePictureIntent.putExtra(MediaStore.ACTION_IMAGE_CAPTURE, photoURI)
-                    requireActivity().startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
                 }
             }
         }
@@ -130,31 +165,35 @@ class FoodAnalysisFragment : Fragment() {
         }
     }
 
-    fun sendPicture() {
-        val mediaType = "multipart/form-data; boundary=---011000010111000001101001".toMediaTypeOrNull()
-        val body = RequestBody.create(mediaType, "-----011000010111000001101001\rContent-Disposition: form-data; name=\"file\"\r\r\r-----011000010111000001101001--\r\r")
+    fun uploadImageToFB(imageBitmap:Bitmap){
+        try{
+
+            val baos = ByteArrayOutputStream()
+            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+            val data = baos.toByteArray()
+
+            var uploadTask = storageRef.putBytes(data)
+            uploadTask.addOnFailureListener {
+                // Handle unsuccessful uploads
+                Toast.makeText(requireView().context, "Failed to upload profile image", Toast.LENGTH_SHORT).show();
+            }.addOnSuccessListener { taskSnapshot ->
+                // taskSnapshot.metadata contains file metadata such as size, content-type, etc.
+                Toast.makeText(requireView().context, "Successfully Uploaded profile image", Toast.LENGTH_SHORT).show();
+
+            }
+
+        }catch (e: FileNotFoundException){
+            Toast.makeText(requireView().context, "Failed to read image", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    fun sendPicture(imageUrl:String) {
         val request = Request.Builder()
-            .url("https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/food/images/classify")
-            .post(body)
-            .addHeader("content-type", "multipart/form-data; boundary=---011000010111000001101001")
+            .url("https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/food/images/analyze?imageUrl=${imageUrl}")
+            .get()
             .addHeader("x-rapidapi-key", "4c61ca64ffmshb84f7b0b1ac2333p1bfd52jsn9b60ed97c505")
             .addHeader("x-rapidapi-host", "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com")
             .build()
-
-
-//        val mediaType = "image/*jpg".toMediaTypeOrNull()
-//        val image = RequestBody.create(mediaType, currentPhotoPath);
-//        val body = MultipartBody.Builder().setType(MultipartBody.FORM).addFormDataPart("image", currentPhotoPath, image).build();
-//
-//        val newbody = RequestBody.create(mediaType, "-----011000010111000001101001\nContent-Disposition: form-data; name=\"currentPhotoPath\"\n \n \n-----011000010111000001101001--\n\n")
-//
-//        val request = Request.Builder()
-//                .url("https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/food/images/classify")
-//                .post(newbody)
-//                .addHeader("content-type", "multipart/form-data; boundary=---011000010111000001101001")
-//                .addHeader("x-rapidapi-key", "4c61ca64ffmshb84f7b0b1ac2333p1bfd52jsn9b60ed97c505")
-//                .addHeader("x-rapidapi-host", "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com")
-//                .build()
 
         client.newCall(request).enqueue(object : Callback {
 
@@ -166,6 +205,7 @@ class FoodAnalysisFragment : Fragment() {
                 response.use {
                     if (!response.isSuccessful) throw IOException("Unexpected code $response") //fix this bad response
                     val body = response.body!!.string();
+                    println(body);
 
                 }
             }
