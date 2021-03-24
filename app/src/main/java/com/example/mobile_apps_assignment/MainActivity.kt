@@ -126,7 +126,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             database.child("users").child(userId).child("username").addValueEventListener(nameListener);
         };
 
-   //     val ref = storageRef.child("images/"+ userId+".jpg")
+
 
 
 
@@ -139,49 +139,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
 
 
-      /*  val logOutButton: Button = findViewById(R.id.logOutButton);
-        logOutButton.setOnClickListener{
-            auth.signOut();
-            finish();
-            val intent = Intent(this, LandingScreen::class.java);
-            startActivity(intent)
-        }
-
-        val searchButton: Button = findViewById(R.id.NavigateToSearchPageButton);
-        searchButton.setOnClickListener{
-            val intent = Intent(this, SearchScreen::class.java);
-            startActivity(intent);
-        }
-
-        val shoppingListButton: Button = findViewById(R.id.NavigateToShoppingListPageButton);
-        shoppingListButton.setOnClickListener{
-            val intent = Intent(this, ShoppingListsScreen::class.java);
-            startActivity(intent);
-        }
-
-        val foodAnalysisButton: Button = findViewById(R.id.openFoodAnalysisScreen);
-        foodAnalysisButton.setOnClickListener{
-            val intent = Intent(this, FoodAnalysisScreen::class.java);
-            startActivity(intent);
-        }
-
-        val profileButton: Button = findViewById(R.id.navigateToProfileButton);
-        profileButton.setOnClickListener{
-            val intent = Intent(this, ProfileScreen::class.java);
-            startActivity(intent);
-        }
-
-        val mapButton: Button = findViewById(R.id.navigateToMapScreenButton);
-        mapButton.setOnClickListener{
-            val intent = Intent(this, MapsScreen::class.java);
-            startActivity(intent);
-        }*/
 
         //notification stuff
 
         val calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 19);
-        calendar.set(Calendar.MINUTE, 30);
+        calendar.set(Calendar.HOUR_OF_DAY, 6);
+        calendar.set(Calendar.MINUTE, 16);
         calendar.set(Calendar.SECOND,0)
 
          val alarmManager =
@@ -190,16 +153,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val intent = Intent(applicationContext, NotificationReciever::class.java);
         val pendingIntent = PendingIntent.getBroadcast(applicationContext,100,intent,PendingIntent.FLAG_UPDATE_CURRENT);
 
-        alarmManager!!.setRepeating(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, AlarmManager.INTERVAL_DAY, pendingIntent)
+
+        alarmManager!!.setRepeating(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, AlarmManager.INTERVAL_FIFTEEN_MINUTES, pendingIntent)
 
 
-
-      /*  val testButton: Button = findViewById(R.id.testButton);
-        testButton.setOnClickListener{
-
-
-        }
-    */
 
     }
 
@@ -207,8 +164,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onResume() {
         super.onResume()
         val navImage = storageRef.downloadUrl.addOnSuccessListener {
-            // Got the download URL for 'users/me/profile.png'
-//            Toast.makeText(this, "succesuful", Toast.LENGTH_SHORT).show();
+
             Picasso.get().load(it).into(headerLayout.navBarImageView);
         }.addOnFailureListener {
             // Handle any errors
@@ -226,7 +182,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         when (item.itemId) {
             R.id.nav_search -> supportFragmentManager.beginTransaction().replace(R.id.fragment_container, SearchFragment()).commit();
             R.id.nav_shopping_list  -> supportFragmentManager.beginTransaction().replace(R.id.fragment_container, ShoppingListsFragment()).commit();
-            R.id.nav_map  -> startActivity(Intent(this, MapsScreen::class.java))//supportFragmentManager.beginTransaction().replace(R.id.fragment_container, MapsFragment(), "map-fragment").commit();
+            R.id.nav_map  -> startActivity(Intent(this, MapsScreen::class.java));
             R.id.nav_food_analysis  -> supportFragmentManager.beginTransaction().replace(R.id.fragment_container, FoodAnalysisFragment()).commit();
             R.id.nav_language  -> supportFragmentManager.beginTransaction().replace(R.id.fragment_container, LanguageFragment()).commit();
             R.id.nav_logout  -> logOut();

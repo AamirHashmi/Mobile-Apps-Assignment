@@ -71,6 +71,7 @@ class FoodAnalysisFragment : Fragment() {
 
     }
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -89,7 +90,10 @@ class FoodAnalysisFragment : Fragment() {
         }
 
         uploadButton.setOnClickListener{
-            uploadImageToFB(foodImageView.drawable.toBitmap());
+            if(foodImageView.drawable != null){
+                uploadImageToFB(foodImageView.drawable.toBitmap());
+            }
+
         }
 
         analyseButton.setOnClickListener{

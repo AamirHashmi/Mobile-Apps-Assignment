@@ -26,9 +26,9 @@ class  NotificationReciever : BroadcastReceiver() {
             val intent = Intent(context, RecipeDetailScreen::class.java).apply {
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             }
-            intent.putExtra("RecipeId", recipeId);
+            intent.putExtra("RecipeId", recipeId.toInt());
             intent.putExtra("RecipeName", recipeName);
-            intent.putExtra("RecipeImage", recipeImage);
+            intent.putExtra("RecipeImage", recipeImage.replace( "https://spoonacular.com/recipeImages/", ""));
 
             val resultPendingIntent: PendingIntent? = TaskStackBuilder.create(context).run {
                 // Add the intent, which inflates the back stack
@@ -38,7 +38,7 @@ class  NotificationReciever : BroadcastReceiver() {
             }
 
             var builder = NotificationCompat.Builder(context!!, "CHANNEL_ID")
-                    .setSmallIcon(R.drawable.googleg_standard_color_18)
+                    .setSmallIcon(R.drawable.ic_baseline_fastfood_24)
                     .setContentTitle("Try this Recipe")
                     .setContentText(recipeName)
                     .setContentIntent(resultPendingIntent)

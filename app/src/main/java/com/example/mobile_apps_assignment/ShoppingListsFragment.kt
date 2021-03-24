@@ -100,11 +100,6 @@ class ShoppingListsFragment : Fragment() {
         return view;
     }
 
-    override fun onPause() {
-        super.onPause()
-        Toast.makeText(context, "ACTIVITY PAUSED", Toast.LENGTH_SHORT).show();
-    }
-
     companion object {
         /**
          * Use this factory method to create a new instance of

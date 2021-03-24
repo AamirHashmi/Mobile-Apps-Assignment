@@ -100,11 +100,6 @@ class RecipeDetailScreen : AppCompatActivity(),  GestureDetector.OnGestureListen
         database.child("users").child(userId).child("favourites").child(recipeId).addValueEventListener(favListener)
         println("yoyo")
 
-//        if(favourited){
-//            favouriteButton.setImageResource(R.drawable.ic_star_fill)
-//        }else{
-//            favouriteButton.setImageResource(R.drawable.ic_baseline_star_outline_24)
-//        }
 
         favouriteButton.setOnClickListener{
             val recipeObj = RecipeSearchItem(recipeId.toInt(), recipeName, recipeImage);
@@ -115,6 +110,7 @@ class RecipeDetailScreen : AppCompatActivity(),  GestureDetector.OnGestureListen
         recipeTitleTextView.text=recipeName;
 
         if(recipeImage !=""){
+            recipeImage = recipeImage.replace("https://spoonacular.com/recipeImages/", "")
             Picasso.get().load( "https://spoonacular.com/recipeImages/"+ recipeImage).into(recipeImageView);
         }
 
